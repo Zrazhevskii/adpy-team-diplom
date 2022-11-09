@@ -4,7 +4,10 @@ from datetime import date
 from bot import write_message
 
 
+# Класс для работы с ВК для обработки информации по текущему пользователю
+# работающему с ботом и передаче информации для поиска пользователей для знакомства
 class UserInfo:
+    # создаем self и узнаем информацию про текущего пользователя для поиска
     def __init__(self, user_id):
         url = f'https://api.vk.com/method/users.get'
         params = {'access_token': token,
@@ -23,9 +26,11 @@ class UserInfo:
         except KeyError:
             write_message(user_id, 'Извините, техническая проблема, мы занимаемся над ней')
 
+    # функция для извлечения имени, отдельно для облегчения и более уважительного обращения к пользователю
     def get_name(self):
         return self.first_name
 
+    # функция для передачи информации в модуль работы с ВК для поиска знакомств
     def get_info(self):
         if self.bdate:
             _, _, year = self.bdate.split('.')

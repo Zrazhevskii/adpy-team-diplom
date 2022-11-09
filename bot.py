@@ -5,12 +5,12 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from bot_info import Info
 from keyboard import get_start_keyboard, button_search
 
-
 vk = vk_api.VkApi(token=token)
 give = vk.get_api()
 longpoll = VkLongPoll(vk)
 
 
+# Функция написания сообщений, клавиатура = None, потому что клавиатуры может быть и не быть
 def write_message(user_id, text, keyboard=None):
     post = {
         'user_id': user_id,
@@ -21,6 +21,7 @@ def write_message(user_id, text, keyboard=None):
     vk.method('messages.send', post)
 
 
+# функция отслеживает поступающие от пользователя сообщения
 def write_msg():
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW:
@@ -34,7 +35,7 @@ def write_msg():
                     answer = f'Привет, {name}!\n' \
                              f'Для получения дополнительной информации нажмите "Инфо"\n' \
                              f'Для начала поиска нажмите "Начать поиск"'
-
+                    # В функции передаем кнопки "Инфо", "Начать поиск"
                     write_message(user_id, answer, keyboard=get_start_keyboard())
                 elif message == 'начать поиск':
                     write_message(user_id, 'Отлично, тогда вперед')
