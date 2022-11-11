@@ -1,13 +1,17 @@
 from config import token, AGE_DELTA, AGEFROM, AGETO
 import requests
 from datetime import date
-from bot import write_message
+
+
+# класс обрабатывающий ошибку при получении пустого 'response'
+# и исключения циклического импорта
+class UserInfoError(Exception):
+    pass
 
 
 # Класс для работы с ВК для обработки информации по текущему пользователю
 # работающему с ботом и передаче информации для поиска пользователей для знакомства
 class UserInfo:
-    # создаем self и узнаем информацию про текущего пользователя для поиска
     def __init__(self, user_id):
         url = f'https://api.vk.com/method/users.get'
         params = {'access_token': token,
@@ -18,13 +22,18 @@ class UserInfo:
         response = repl.json()
         try:
             information_dict = response['response']
-            for i in information_dict:
-                self.first_name = i.get('first_name')
-                self.city = i.get('city').get('title')
-                self.sex = i.get('sex')
-                self.bdate = i.get('bdate')
         except KeyError:
-            write_message(user_id, 'Извините, техническая проблема, мы занимаемся над ней')
+            print('Хьюстон, у нас технические проблемы!')
+            raise UserInfoError('Извините, техническая проблема, мы занимаемся над ней')
+        for i in information_dict:
+            self.first_name = i.get('first_name')
+            cit = i.get('city')
+            if cit:
+                self.city = cit['title']
+            else:
+                self.city = ''
+            self.sex = i.get('sex')
+            self.bdate = i.get('bdate')
 
     # функция для извлечения имени, отдельно для облегчения и более уважительного обращения к пользователю
     def get_name(self):
