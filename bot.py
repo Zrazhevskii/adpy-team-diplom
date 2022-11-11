@@ -1,6 +1,7 @@
 import vk_api
+from VK_API.vk_class import Vk
 from server import UserInfo, UserInfoError
-from config import token
+from config import token, TOKEN_VK_USER
 from vk_api.longpoll import VkLongPoll, VkEventType
 from bot_info import Info, start
 from keyboards import get_start_keyboard, button_search
@@ -47,14 +48,19 @@ def write_msg():
                     answer = f'Привет, {name}!\n' \
                              f'Для получения дополнительной информации нажмите "Инфо"\n' \
                              f'Для начала поиска нажмите "Начать поиск"'
-
                     write_message(user_id, answer, keyboard=get_start_keyboard())
                 elif message == 'начать поиск':
                     write_message(user_id, 'Отлично, тогда вперед!')
-                    # это я тренируюсь передавать фотографии, в этом формате (часть адресной строки) выдаются сразу фото
-                    write_message(user_id, 'Вот ваши фото', attachment='photo808832_457240640,photo677584128_457240276')
-                    # write_message(search_frends(user.get_info()))
+                    user_data_dict = user.get_info()
+                    vk = Vk(TOKEN_VK_USER)
+                    res = vk.search_for_users_to_meet(user_data_dict) # получаем массив данных пользователей ВК
+                    for iter_ in res: # для записи в БД
+                        print(iter_)
 
+
+                    # это я тренируюсь передавать фотографии, в этом формате (часть адресной строки) выдаются сразу фото
+                    # write_message(user_id, 'Вот ваши фото', attachment='photo808832_457240640,photo677584128_457240276')
+                    # write_message(search_frends(user.get_info()))
                 elif message == 'инфо':
                     write_message(user_id, Info.info(), keyboard=button_search())
                 else:

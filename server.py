@@ -29,7 +29,7 @@ class UserInfo:
             self.first_name = i.get('first_name')
             cit = i.get('city')
             if cit:
-                self.city = cit['title']
+                self.city = cit["id"]
             else:
                 self.city = ''
             self.sex = i.get('sex')

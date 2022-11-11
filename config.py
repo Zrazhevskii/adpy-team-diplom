@@ -1,4 +1,6 @@
-token = 'your token'
-AGE_DELTA = 5
+
+token = 'token группы ВКонтакте'
+TOKEN_VK_USER = "токен пользователя"
+AGE_DELTA = 2
 AGEFROM = 18
 AGETO = 45
