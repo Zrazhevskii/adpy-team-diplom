@@ -41,6 +41,7 @@ def button_search():
     return keyboard_info
 
 
+# создаем кнопки которые будут показаны при показе информации пользователю
 def button_work():
     keyboard = {
         "one_time": True,
