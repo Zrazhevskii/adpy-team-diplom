@@ -67,7 +67,7 @@ def write_msg():
                     for iter_ in res:
                         photos = vk.upload_photos(iter_.get('user_id'))
                         if photos:
-                            iter_['photos'] = ''.join(photos)
+                            iter_['photos'] = ','.join(photos)
                             search_result.append(iter_)
                     write_message(user_id, 'Найдено записей: {}'.format(len(search_result)), keyboard=start_show())
 
