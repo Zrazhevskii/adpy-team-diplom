@@ -4,18 +4,22 @@ from server import UserInfo, UserInfoError
 from config import token, TOKEN_VK_USER
 from vk_api.longpoll import VkLongPoll, VkEventType
 from bot_info import Info, start
-from keyboards import get_start_keyboard, button_search
+from keyboards import get_start_keyboard, button_search, button_work, start_show
 
 vk = vk_api.VkApi(token=token)
 give = vk.get_api()
 longpoll = VkLongPoll(vk)
 
+search_result = [] # список всех пользователей найденных в ВК
 
-# функция заглушка, в последующем она будет передавать найденные в VK данные пользователю
-def search_frends(req):
-    return [{
-        ''
-    }]
+
+# функция вывода пользователю полученной в ВК информации
+def get_user_info_message(user_info):
+    return '{} {}\n{}'.format(
+        user_info.get('first_name'),
+        user_info.get('last_name'),
+        'https://vk.com/id{}'.format(user_info.get('user_id')),
+    )
 
 
 # Функция написания сообщений пользователю
@@ -53,16 +57,27 @@ def write_msg():
                     write_message(user_id, 'Отлично, тогда вперед!')
                     user_data_dict = user.get_info()
                     vk = Vk(TOKEN_VK_USER)
-                    res = vk.search_for_users_to_meet(user_data_dict) # получаем массив данных пользователей ВК
-                    for iter_ in res: # для записи в БД
-                        print(iter_)
+                    try:
+                        res = vk.search_for_users_to_meet(user_data_dict)  # получаем массив данных пользователей ВК
+                    except Exception as e:
+                        write_message(user_id, 'Попробуйте обратится через несколько минут.')
+                        message = ''
+                        continue
+                    search_result.clear() # очищаем общий список
+                    for iter_ in res:
+                        photos = vk.upload_photos(iter_.get('user_id'))
+                        if photos:
+                            iter_['photos'] = ''.join(photos)
+                            search_result.append(iter_)
+                    write_message(user_id, 'Найдено записей: {}'.format(len(search_result)), keyboard=start_show())
 
-
-                    # это я тренируюсь передавать фотографии, в этом формате (часть адресной строки) выдаются сразу фото
-                    # write_message(user_id, 'Вот ваши фото', attachment='photo808832_457240640,photo677584128_457240276')
-                    # write_message(search_frends(user.get_info()))
                 elif message == 'инфо':
                     write_message(user_id, Info.info(), keyboard=button_search())
+                elif message in ('следующий', 'начать просмотр'):
+                    user_info = search_result.pop(0)
+                    write_message(user_id, get_user_info_message(user_info), attachment=user_info['photos'],
+                                  keyboard=button_work())
+
                 else:
                     write_message(user_id, 'я вас не понимаю')
 
