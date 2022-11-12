@@ -47,8 +47,20 @@ def button_work():
         "one_time": True,
         "buttons": [
             [get_button('Добавить в избранное', 'primary'), get_button('Добавить в черный список', 'negative')],
-            [get_button('Удалить из избранного', 'secondary')],
-            [get_button('Cледующий', 'positive')]
+            [get_button('Следующий', 'positive')]
+        ]
+    }
+
+    keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
+    keyboard_info = str(keyboard.decode('utf-8'))
+    return keyboard_info
+
+
+def start_show():
+    keyboard = {
+        "one_time": True,
+        "buttons": [
+            [get_button('Начать просмотр', 'primary')]
         ]
     }
 
