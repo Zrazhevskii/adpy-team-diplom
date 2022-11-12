@@ -2,6 +2,7 @@ import requests
 from VK_API.sorting_functions import _sorter_user, _sort_photo_users
 from config import TOKEN_VK_USER
 
+
 class Vk:
     URL = 'https://api.vk.com/method/'
 
@@ -24,15 +25,17 @@ class Vk:
                       'has_photo': '1',
                       'sort': '0'
                       }
-        while True: # запускаем цикл для формирования списка пользователей
-            req = requests.get(def_URL, params={**self.params, **params_def}).json()
-            result = req['response']
-            offset += result['count'] # если количество пользователей больше увеличиваем offset
-            list_user.extend(req['response']['items']) # добавляем к списку полученных пользователей
-            if flag == result['count']: # если флаг равен количесту всех выгруженных пользователей прерываем цикл
-                break
-            else:
-                flag += result['count'] # если флаг равен количесту всех выгруженных цикл продолжаем
+        req = requests.get(def_URL, params={**self.params, **params_def}).json()
+        list_user.extend(req['response']['items'])
+        # while True:  # запускаем цикл для формирования списка пользователей
+        #     req = requests.get(def_URL, params={**self.params, **params_def}).json()
+        #     result = req['response']
+        #     offset += result['count']  # если количество пользователей больше увеличиваем offset
+        #     list_user.extend(req['response']['items'])  # добавляем к списку полученных пользователей
+        #     if flag == result['count']:  # если флаг равен количесту всех выгруженных пользователей прерываем цикл
+        #         break
+        #     else:
+        #         flag += result['count']  # если флаг равен количесту всех выгруженных цикл продолжаем
         res = _sorter_user(list_user, dict_['city'])
         return res
 
@@ -46,12 +49,10 @@ class Vk:
         }
         req = requests.get(def_URL, params={**self.params, **params_def}).json()
         # time.sleep(0.34)
-        if 'error' in req: # если профиль закрытый
-            return 'Профиль приватный'
-        elif req['response']['count'] == 0: # если у пользователя в профиле отсутствуют фотографии
-            return 'У пользователя нет фотографий'
-        elif req['response']['count'] != 0: # если у пользователя в профиле есть фотографии
+        if 'error' in req:  # если профиль закрытый
+            return None
+        elif req['response']['count'] == 0:  # если у пользователя в профиле отсутствуют фотографии
+            return None
+        elif req['response']['count'] != 0:  # если у пользователя в профиле есть фотографии
             res = _sort_photo_users(req['response'])
             return res
-
-
