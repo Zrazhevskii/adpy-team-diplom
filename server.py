@@ -13,6 +13,7 @@ class UserInfoError(Exception):
 # работающему с ботом и передаче информации для поиска пользователей для знакомства
 class UserInfo:
     def __init__(self, user_id):
+
         url = f'https://api.vk.com/method/users.get'
         params = {'access_token': token,
                   'user_ids': user_id,
@@ -34,10 +35,16 @@ class UserInfo:
                 self.city = ''
             self.sex = i.get('sex')
             self.bdate = i.get('bdate')
+            self.user_id = i.get('id')
+            self.last_name = i.get('last_name')
+        print(f'information_dict: {information_dict}')
 
     # функция для извлечения имени, отдельно для облегчения и более уважительного обращения к пользователю
     def get_name(self):
         return self.first_name
+
+    def get_last_name(self):
+        return self.last_name
 
     # функция для передачи информации в модуль работы с ВК для поиска знакомств
     def get_info(self):
@@ -57,5 +64,7 @@ class UserInfo:
             'city': self.city,
             'sex': str(sex),
             'age_from': str(age_from),
-            'age_to': str(age_to)
+            'age_to': str(age_to),
+            'id': self.user_id,
+            'name': f'{self.get_name()} {self.get_last_name()}'
         }

@@ -55,7 +55,9 @@ def write_msg():
                     write_message(user_id, answer, keyboard=get_start_keyboard())
                 elif message == 'начать поиск':
                     write_message(user_id, 'Отлично, тогда вперед!')
+
                     user_data_dict = user.get_info()
+                    print(f'user_data_dict: {user_data_dict}')
                     vk = Vk(TOKEN_VK_USER)
                     try:
                         res = vk.search_for_users_to_meet(user_data_dict)  # получаем массив данных пользователей ВК
@@ -74,9 +76,12 @@ def write_msg():
                 elif message == 'инфо':
                     write_message(user_id, Info.info(), keyboard=button_search())
                 elif message in ('следующий', 'начать просмотр'):
-                    user_info = search_result.pop(0)
+
+
+                    user_info = search_result.pop(0) # это не юзер, а человек из списка найденных. заменить user_info на что-то другое
                     write_message(user_id, get_user_info_message(user_info), attachment=user_info['photos'],
                                   keyboard=button_work())
+                    print(f'user_info: {user_info}')
 
                 else:
                     write_message(user_id, 'я вас не понимаю')
