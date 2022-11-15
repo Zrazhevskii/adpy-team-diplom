@@ -5,12 +5,13 @@ from config import token, TOKEN_VK_USER
 from vk_api.longpoll import VkLongPoll, VkEventType
 from bot_info import Info, start
 from keyboards import get_start_keyboard, button_search, button_work, start_show
+from database.db_reader import DBReader
 
 vk = vk_api.VkApi(token=token)
 give = vk.get_api()
 longpoll = VkLongPoll(vk)
 
-search_result = [] # список всех пользователей найденных в ВК
+search_result = []  # список всех пользователей найденных в ВК
 
 
 # функция вывода пользователю полученной в ВК информации
@@ -43,6 +44,7 @@ def write_msg():
                 user_id = event.user_id
                 try:
                     user = UserInfo(user_id)
+                    reader = DBReader(user.get_info())
                 except UserInfoError as e:
                     write_message(user_id, e)
                     write_message(user_id, 'Попробуйте обратится через несколько минут.')
@@ -54,10 +56,10 @@ def write_msg():
                              f'Для начала поиска нажмите "Начать поиск"'
                     write_message(user_id, answer, keyboard=get_start_keyboard())
                 elif message == 'начать поиск':
-                    write_message(user_id, 'Отлично, тогда вперед!')
+                    write_message(user_id, 'Отлично, тогда вперед! Это может занять некоторое время')
 
                     user_data_dict = user.get_info()
-                    print(f'user_data_dict: {user_data_dict}')
+
                     vk = Vk(TOKEN_VK_USER)
                     try:
                         res = vk.search_for_users_to_meet(user_data_dict)  # получаем массив данных пользователей ВК
@@ -65,7 +67,7 @@ def write_msg():
                         write_message(user_id, 'Попробуйте обратится через несколько минут.')
                         message = ''
                         continue
-                    search_result.clear() # очищаем общий список
+                    search_result.clear()  # очищаем общий список
                     for iter_ in res:
                         photos = vk.upload_photos(iter_.get('user_id'))
                         if photos:
@@ -77,11 +79,12 @@ def write_msg():
                     write_message(user_id, Info.info(), keyboard=button_search())
                 elif message in ('следующий', 'начать просмотр'):
 
-
-                    user_info = search_result.pop(0) # это не юзер, а человек из списка найденных. заменить user_info на что-то другое
-                    write_message(user_id, get_user_info_message(user_info), attachment=user_info['photos'],
+                    friend_info = search_result.pop(0)
+                    write_message(user_id, get_user_info_message(friend_info), attachment=friend_info['photos'],
                                   keyboard=button_work())
-                    print(f'user_info: {user_info}')
+
+                elif message == 'добавить в избранное':
+                    reader._add_to_favorite_list(friend_info)
 
                 else:
                     write_message(user_id, 'я вас не понимаю')
