@@ -33,6 +33,7 @@ class UserInfo:
             else:
                 self.city = ''
             self.sex = i.get('sex')
+            self.user_id = i.get('id')
             self.bdate = i.get('bdate')
 
     # функция для извлечения имени, отдельно для облегчения и более уважительного обращения к пользователю
@@ -54,6 +55,7 @@ class UserInfo:
         else:
             sex = 0
         return {
+            'id': self.user_id,
             'city': self.city,
             'sex': str(sex),
             'age_from': str(age_from),
