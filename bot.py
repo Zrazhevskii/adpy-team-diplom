@@ -105,7 +105,7 @@ if __name__ == '__main__':
                     write_message(user_id, 'Отлично, тогда вперед!')
                     user_data_dict = user.get_info()
                     xd = Db_reader(user_data_dict)
-                    xd._add_user_to_database() # записываем пользователя в БД
+                    xd.add_user_to_database() # записываем пользователя в БД
                     matchmaking = Matchmaking(TOKEN_VK_USER)
                     try:
                         res = matchmaking.search_for_users_to_meet(user_data_dict) # получаем данные пользователей ВК
