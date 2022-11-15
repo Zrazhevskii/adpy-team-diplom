@@ -1,10 +1,21 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from models import create_tables
+
+from database.models import create_tables
 
 
 def create_session():
-    # DSN = "postgresql://postgres:PASS@localhost:5432/NAME"
+    dialect = 'postgresql'  # это имя базы данных(mysql, postgresql, mssql, oracle и так далее).
+    driver = ''  # используемый DBAPI. Этот параметр является необязательным. Если его
+                 # не указать будет использоваться драйвер по умолчанию(если он установлен).
+    username = 'postgres'
+    password = 'необходимо ввести свой пароль на БД'  # данные для получения доступа к базе данных.
+    host = 'localhost'  # расположение сервера базы данных.
+    port = '5432'  # порт для подключения.
+    database = 'необходимо указань название БД'  # название базы данных.
+
+    DSN = f'{dialect + driver}://{username}:{password}@{host}:{port}/{database}'
+
     engine = create_engine(DSN)
     create_tables(engine)
     Session = sessionmaker(bind=engine)

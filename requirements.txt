@@ -1,0 +1,11 @@
+certifi==2022.9.24
+charset-normalizer==2.1.1
+idna==3.4
+psycopg2-binary==2.9.5
+requests==2.28.1
+urllib3==1.26.12
+vk-api==11.9.9
+
+pip~=21.3.1
+setuptools~=60.2.0
+SQLAlchemy~=1.4.44
