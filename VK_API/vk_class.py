@@ -21,7 +21,7 @@ class Vk:
                       'age_from': dict_['age_from'],
                       'age_to': dict_['age_to'],
                       'count': '1000',
-                      'fields': "city, sex",
+                      'fields': "city, sex, bdate",
                       'has_photo': '1',
                       'sort': '0'
                       }
