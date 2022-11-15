@@ -49,9 +49,8 @@ def write_msg():
                     write_message(user_id, e)
                     write_message(user_id, 'Попробуйте обратится через несколько минут.')
                     continue
-                name = user.get_name()
                 if message in start:
-                    answer = f'Привет, {name}!\n' \
+                    answer = f'Привет, {user.first_name}!\n' \
                              f'Для получения дополнительной информации нажмите "Инфо"\n' \
                              f'Для начала поиска нажмите "Начать поиск"'
                     write_message(user_id, answer, keyboard=get_start_keyboard())
@@ -84,6 +83,8 @@ def write_msg():
 
                 elif message == 'добавить в избранное':
                     reader._add_to_favorite_list(friend_info)
+                    write_message(user_id, 'Пользователь удачно добавлен в "Избранное"')
+                elif message == 'добавить в черный список':
 
                 else:
                     write_message(user_id, 'я вас не понимаю')

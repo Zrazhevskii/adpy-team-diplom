@@ -19,7 +19,7 @@ class Matchmaking:
                       'count': '100',
                       'fields': "city, sex, bdate",
                       'has_photo': '1',
-                      'sort': '0'
+                      'sort': '0',
                       }
         req = requests.get(def_URL, params={**self.params, **params_def}).json()
         res = _sorter_user(req['response']['items'], dict_['city'])
