@@ -13,7 +13,6 @@ class UserInfoError(Exception):
 # работающему с ботом и передаче информации для поиска пользователей для знакомства
 class UserInfo:
     def __init__(self, user_id):
-
         url = f'https://api.vk.com/method/users.get'
         params = {'access_token': token,
                   'user_ids': user_id,
@@ -27,24 +26,17 @@ class UserInfo:
             print('Хьюстон, у нас технические проблемы!')
             raise UserInfoError('Извините, техническая проблема, мы занимаемся над ней')
         for i in information_dict:
-            self.first_name = i.get('first_name')
-            cit = i.get('city')
-            if cit:
-                self.city = cit["id"]
+
+            city = i.get('city')
+            if city:
+                self.city = city["id"]
             else:
                 self.city = ''
+            self.first_name = i.get('first_name')
             self.sex = i.get('sex')
             self.bdate = i.get('bdate')
             self.user_id = i.get('id')
             self.last_name = i.get('last_name')
-        print(f'information_dict: {information_dict}')
-
-    # функция для извлечения имени, отдельно для облегчения и более уважительного обращения к пользователю
-    def get_name(self):
-        return self.first_name
-
-    def get_last_name(self):
-        return self.last_name
 
     # функция для передачи информации в модуль работы с ВК для поиска знакомств
     def get_info(self):
@@ -66,5 +58,5 @@ class UserInfo:
             'age_from': str(age_from),
             'age_to': str(age_to),
             'id': self.user_id,
-            'name': f'{self.get_name()} {self.get_last_name()}'
+            'name': f'{self.first_name} {self.last_name}'
         }

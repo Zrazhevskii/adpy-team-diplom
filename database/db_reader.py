@@ -1,14 +1,11 @@
 from database.database import create_session
 from database.models import User, FavoriteList, BlackList
-from server import UserInfo
-import psycopg2
 
 
 class DBReader(object):
     def __init__(self, user_data_dict):
         self.db_session = create_session()
         self.user_data_dict = user_data_dict
-        # self.
 
     def _add_user_to_database(self):
         """ добавляет пользователя в бд """
@@ -24,12 +21,6 @@ class DBReader(object):
             return 1
         return 1
 
-    def _check(self):
-        q = self.db_session.query(User).all()
-        for i in q:
-            print(i)
-        # print(q)
-
     def _add_to_favorite_list(self, friend_info):
         """ добавляет в список избранных """
         user_id = self._add_user_to_database()
@@ -41,10 +32,3 @@ class DBReader(object):
             user_id=user_id,
         ))
         self.db_session.commit()
-
-
-if __name__ == '__main__':
-    user_test = UserInfo(user_id=71547447)
-    xd = DBReader(user_test.get_info())
-    xd._add_user_to_database()
-    xd._check()

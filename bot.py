@@ -1,5 +1,5 @@
 import vk_api
-from VK_API.vk_class import Vk
+from VK_API.vk_class import Matchmaking
 from server import UserInfo, UserInfoError
 from config import token, TOKEN_VK_USER
 from vk_api.longpoll import VkLongPoll, VkEventType
@@ -59,8 +59,7 @@ def write_msg():
                     write_message(user_id, 'Отлично, тогда вперед! Это может занять некоторое время')
 
                     user_data_dict = user.get_info()
-
-                    vk = Vk(TOKEN_VK_USER)
+                    vk = Matchmaking(TOKEN_VK_USER)
                     try:
                         res = vk.search_for_users_to_meet(user_data_dict)  # получаем массив данных пользователей ВК
                     except Exception as e:
