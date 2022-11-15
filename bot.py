@@ -82,10 +82,11 @@ def write_msg():
                                   keyboard=button_work())
 
                 elif message == 'добавить в избранное':
-                    reader._add_to_favorite_list(friend_info)
+                    reader.add_to_favorite_list(friend_info)
                     write_message(user_id, 'Пользователь удачно добавлен в "Избранное"')
                 elif message == 'добавить в черный список':
-
+                    reader.add_to_black_list(friend_info)
+                    write_message(user_id, 'Пользователь добавлен в "Черный список"')
                 else:
                     write_message(user_id, 'я вас не понимаю')
 
