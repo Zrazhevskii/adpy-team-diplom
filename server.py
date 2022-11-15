@@ -26,15 +26,16 @@ class UserInfo:
             print('Хьюстон, у нас технические проблемы!')
             raise UserInfoError('Извините, техническая проблема, мы занимаемся над ней')
         for i in information_dict:
-            self.first_name = i.get('first_name')
-            cit = i.get('city')
-            if cit:
-                self.city = cit["id"]
+            city = i.get('city')
+            if city:
+                self.city = city["id"]
             else:
                 self.city = ''
             self.sex = i.get('sex')
             self.user_id = i.get('id')
             self.bdate = i.get('bdate')
+            self.first_name = i.get('first_name')
+            self.last_name = i.get('last_name')
 
     # функция для извлечения имени, отдельно для облегчения и более уважительного обращения к пользователю
     def get_name(self):
@@ -59,5 +60,6 @@ class UserInfo:
             'city': self.city,
             'sex': str(sex),
             'age_from': str(age_from),
-            'age_to': str(age_to)
+            'age_to': str(age_to),
+            'name': f'{self.first_name} {self.last_name}'
         }
