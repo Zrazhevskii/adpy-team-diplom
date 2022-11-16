@@ -47,7 +47,8 @@ def button_work():
         "one_time": False,
         "buttons": [
             [get_button('Добавить в избранное', 'primary'), get_button('Добавить в черный список', 'negative')],
-            [get_button('Следующий', 'positive')]
+            [get_button('Следующий', 'positive')],
+            [get_button('Показать список избранных', 'secondary')]
         ]
     }
 
