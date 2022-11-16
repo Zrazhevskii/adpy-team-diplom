@@ -36,7 +36,7 @@ class DBReader(object):
         self.db_session.commit()
 
     def add_to_black_list(self, friend_info):
-        """ добавляет в список избранных """
+        """ добавляет в черный список """
         user_id = self.add_user_to_database()
         self.db_session.add(BlackList(
             blacklisted_id=friend_info['user_id'],
