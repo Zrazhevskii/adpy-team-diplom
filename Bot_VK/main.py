@@ -89,9 +89,9 @@ def write_msg():
                 elif message == 'добавить в черный список':
                     reader.add_to_black_list(friend_info)
                     write_message(user_id, 'Пользователь добавлен в "Черный список"')
-                elif message == 'показать список избранных':
-                    get_all_favorit =                           # вызов всех избранных
-                    write_message(user_id, get_all_favorit)
+                # elif message == 'показать список избранных':
+                    # get_all_favorit =                           # вызов всех избранных
+                    # write_message(user_id, get_all_favorit)
                 else:
                     write_message(user_id, 'я вас не понимаю')
 
