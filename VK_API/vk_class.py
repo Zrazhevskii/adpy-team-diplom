@@ -1,6 +1,5 @@
 import requests
 from VK_API.sorting_functions import _sorter_user, _sort_photo_users
-from config import TOKEN_VK_USER
 
 
 class Matchmaking:
@@ -20,7 +19,7 @@ class Matchmaking:
                       'count': '100',
                       'fields': "city, sex, bdate",
                       'has_photo': '1',
-                      'sort': '0'
+                      'sort': '0',
                       }
         req = requests.get(def_URL, params={**self.params, **params_def}).json()
         res = _sorter_user(req['response']['items'], dict_['city'])
@@ -35,7 +34,7 @@ class Matchmaking:
             'extended': '1',
         }
         req = requests.get(def_URL, params={**self.params, **params_def}).json()
-        if 'error' in req or req['response']['count'] == 0:  # если профиль закрытый или отсутствуют фотографии
+        if 'error' in req or req['response']['count'] == 0:  # если профиль закрытый
             return None
         elif req['response']['count'] != 0:  # если у пользователя в профиле есть фотографии
             res = _sort_photo_users(req['response'])

@@ -11,10 +11,6 @@ class User(Base):
     name = Column(String, nullable=False)
     link = Column(String(length=28), unique=True, nullable=False)
 
-    # удалить
-    # def __str__(self):
-    #     return f'id: {self.id}, user_id: {self.user_id}, name: {self.name}, link: {self.link}'
-
 
 class FavoriteList(Base):
     __tablename__ = 'favorite_list'
