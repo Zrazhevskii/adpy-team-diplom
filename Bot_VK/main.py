@@ -76,10 +76,12 @@ def write_msg():
                 elif message == 'инфо':
                     write_message(user_id, Info.info(), keyboard=button_search())
                 elif message in ('следующий', 'начать просмотр'):
-
-                    friend_info = search_result.pop(0)
-                    write_message(user_id, get_user_info_message(friend_info), attachment=friend_info['photos'],
-                                  keyboard=button_work())
+                    try:
+                        friend_info = search_result.pop(0)
+                        write_message(user_id, get_user_info_message(friend_info), attachment=friend_info['photos'],
+                                      keyboard=button_work())
+                    except IndexError:
+                        write_message(user_id, 'К сожалению результаты поиска закончились :(')
 
                 elif message == 'добавить в избранное':
                     reader.add_to_favorite_list(friend_info)
