@@ -1,17 +1,12 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from local_cofig import db_name, password
-
-DSN = f"postgresql://postgres:{password}@localhost:5432/{db_name}"
-
-
-def get_engine(DSN):
-    return create_engine(DSN)
+from database.models import create_tables
 
 
 def create_session():
-    engine = get_engine(DSN)
-    # create_tables(engine)
+    DSN = f"postgresql://postgres:r3l0ATprogef3w_+@localhost:5432/adv_dip"
+    engine = create_engine(DSN)
+    create_tables(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
     return session

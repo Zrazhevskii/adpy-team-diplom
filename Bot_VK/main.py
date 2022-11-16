@@ -6,6 +6,7 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from bot_info import Info, start
 from keyboards import get_start_keyboard, button_search, button_work, start_show
 from database.db_reader import DBReader
+from database.database import create_session
 
 vk = vk_api.VkApi(token=token)
 give = vk.get_api()
@@ -43,8 +44,10 @@ def write_msg():
                 message = event.text.lower()
                 user_id = event.user_id
                 try:
+                    create_session()
                     user = UserInfo(user_id)
                     reader = DBReader(user.get_info())
+                    reader.add_user_to_database()
                 except UserInfoError as e:
                     write_message(user_id, e)
                     write_message(user_id, 'Попробуйте обратится через несколько минут.')
@@ -89,9 +92,17 @@ def write_msg():
                 elif message == 'добавить в черный список':
                     reader.add_to_black_list(friend_info)
                     write_message(user_id, 'Пользователь добавлен в "Черный список"')
-                # elif message == 'показать список избранных':
-                    # get_all_favorit =                           # вызов всех избранных
-                    # write_message(user_id, get_all_favorit)
+                elif message == 'показать список избранных':
+                    for favorite in reader.get_favorite_list():
+                        first_name = favorite.name.partition(' ')[0]
+                        last_name = favorite.name.partition(' ')[1]
+                        favorite_id = favorite.favorite_id
+                        new_friend_info = {}
+                        new_friend_info['first_name'] = first_name
+                        new_friend_info['last_name'] = last_name
+                        new_friend_info['user_id'] = favorite_id
+                        write_message(user_id, get_user_info_message(new_friend_info),
+                                      keyboard=button_work())
                 else:
                     write_message(user_id, 'я вас не понимаю')
 
