@@ -1,4 +1,4 @@
-from config import token, AGE_DELTA, AGEFROM, AGETO
+from Bot_VK.config import token, AGE_DELTA, AGEFROM, AGETO
 import requests
 from datetime import date
 
