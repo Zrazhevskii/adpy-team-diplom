@@ -1,6 +1,6 @@
 import vk_api
 from VK_API.vk_class import Matchmaking
-from server import UserInfo, UserInfoError
+from Bot_VK.server import UserInfo, UserInfoError
 from config import token, TOKEN_VK_USER
 from vk_api.longpoll import VkLongPoll, VkEventType
 from bot_info import Info, start
