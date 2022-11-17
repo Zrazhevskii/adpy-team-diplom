@@ -70,12 +70,16 @@ def write_msg():
                         continue
                     search_result.clear()  # очищаем общий список
                     for iter_ in res:
-                        photos = vk.upload_photos(iter_.get('user_id'))
-                        if photos:
-                            iter_['photos'] = ','.join(photos)
-                            search_result.append(iter_)
-                    write_message(user_id, 'Найдено записей: {}'.format(len(search_result)), keyboard=start_show())
-
+                        id_ = iter_['user_id']
+                        res = reader.get_black_list(id_) # проверяем есть ли найденный пользователь в БД
+                        if res:
+                            continue
+                        else:
+                            photos = vk.upload_photos(iter_.get('user_id'))
+                            if photos:
+                                iter_['photos'] = ','.join(photos)
+                                search_result.append(iter_)
+                    write_message(user_id, f'Найдено записей: {len(search_result)}', keyboard=start_show())
                 elif message == 'инфо':
                     write_message(user_id, Info.info(), keyboard=button_search())
                 elif message in ('следующий', 'начать просмотр'):
