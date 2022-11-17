@@ -1,5 +1,8 @@
+from sqlalchemy import and_
+
 from database.database import create_session
 from database.models import User, FavoriteList, BlackList
+from sqlalchemy.sql import exists
 
 
 class DBReader(object):
@@ -29,7 +32,7 @@ class DBReader(object):
         self.db_session.commit()
 
     def add_to_black_list(self, friend_info):
-        """ добавляет в черный список """
+        """ Добавляет в черный список """
         self.db_session.add(BlackList(
             blacklisted_id=friend_info['user_id'],
             user_id=self.user_id
@@ -44,3 +47,9 @@ class DBReader(object):
         for favorite in favorite_list_:
             favorite_list.append(favorite)
         return favorite_list
+
+    def get_black_list(self, id_):
+        """Метод проверяет наличие id найденных пользователей в черном списке"""
+        black_list = self.db_session.query(
+            exists().where(and_(BlackList.blacklisted_id == id_, BlackList.user_id == self.user_id))).scalar()
+        return black_list
