@@ -1,4 +1,4 @@
-from config import token, AGE_DELTA, AGEFROM, AGETO
+from Bot_VK.config import token, AGE_DELTA, AGEFROM, AGETO
 import requests
 from datetime import date
 
@@ -26,18 +26,17 @@ class UserInfo:
             print('Хьюстон, у нас технические проблемы!')
             raise UserInfoError('Извините, техническая проблема, мы занимаемся над ней')
         for i in information_dict:
-            self.first_name = i.get('first_name')
-            cit = i.get('city')
-            if cit:
-                self.city = cit["id"]
+
+            city = i.get('city')
+            if city:
+                self.city = city["id"]
             else:
                 self.city = ''
+            self.first_name = i.get('first_name')
             self.sex = i.get('sex')
             self.bdate = i.get('bdate')
-
-    # функция для извлечения имени, отдельно для облегчения и более уважительного обращения к пользователю
-    def get_name(self):
-        return self.first_name
+            self.user_id = i.get('id')
+            self.last_name = i.get('last_name')
 
     # функция для передачи информации в модуль работы с ВК для поиска знакомств
     def get_info(self):
@@ -57,5 +56,7 @@ class UserInfo:
             'city': self.city,
             'sex': str(sex),
             'age_from': str(age_from),
-            'age_to': str(age_to)
+            'age_to': str(age_to),
+            'id': self.user_id,
+            'name': f'{self.first_name} {self.last_name}'
         }
